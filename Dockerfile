@@ -33,6 +33,19 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     cmake
 
+# GDB dependencies
+RUN apt-get update && apt-get install -y \
+    libncurses5 \
+    libncurses5-dev \
+    libncursesw5 \
+    libncursesw5-dev \
+    python3 \
+    python3-venv \
+    python3-pip \
+    expat
+
+    
+
 RUN useradd -ms /bin/bash vscode
 
 # Switch user back to root

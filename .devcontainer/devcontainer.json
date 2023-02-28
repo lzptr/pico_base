@@ -15,7 +15,7 @@
 	"containerEnv": {
 		"DISPLAY": ":0", // Add x11 forwarding to host
 		"GITHUB_USER": "${localEnv:GITHUB_USER}", // Use the host git username when committing
-		"PICO_SDK_PATH": "/opt/toolchain/pico" // Add the pico sdk path
+		"PICO_SDK_PATH": "/opt/toolchain/pico/pico-sdk" // Add the pico sdk path
 	},
 	"settings": {
 		"terminal.integrated.profiles.linux": {
