@@ -8,10 +8,6 @@ RUN apt-get update && apt-get install -y \
     curl \
     bash \
     git \
-    python3-dev \
-    python3 \
-    python3-venv \
-    python3-pip \
     cppcheck \
     libmodbus-dev \
     cccc \
@@ -39,12 +35,12 @@ RUN apt-get update && apt-get install -y \
     libncurses5-dev \
     libncursesw5 \
     libncursesw5-dev \
+    python3-dev \
     python3 \
     python3-venv \
     python3-pip \
     expat
 
-    
 
 RUN useradd -ms /bin/bash vscode
 
