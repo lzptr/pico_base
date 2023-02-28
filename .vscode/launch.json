@@ -13,7 +13,7 @@
             "numberOfProcessors": 2,
             "targetProcessor": 1, // First Cortex-M0+
             "executable": "build/src/pico_example.elf",
-            "armToolchainPath": "/opt/toolchain/gcc-arm-none-eabi-10.3-2021.10/bin",
+            "armToolchainPath": "/opt/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin",
             "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
             "runToEntryPoint": "main",
             
