@@ -51,5 +51,5 @@ ARG TOOLCHAIN_DIR="/opt/toolchain"
 # Copy bootstrap script and patch files into toolchain directory
 COPY ./libs/platforms/scripts/bootstrap.sh /
 
-# Run bootstrap script with only gcc and jlink requirements
+# Run bootstrap script
 RUN bash -c "/bootstrap.sh --gcc --openocd --pico_sdk"
