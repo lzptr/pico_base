@@ -8,7 +8,7 @@
             "request": "launch",
             "servertype": "bmp",
             "device": "RP2040",
-            "BMPGDBSerialPort": "/dev/ttyACM1",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
             "interface": "swd",
             "numberOfProcessors": 2,
             "targetProcessor": 1, // First Cortex-M0+
@@ -16,9 +16,6 @@
             "armToolchainPath": "/opt/toolchain/gcc-arm-none-eabi-10.3-2021.10/bin",
             "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
             "runToEntryPoint": "main",
-            "preLaunchCommands": [
-                "monitor traceswo 115200"
-            ],
             
         },
     ]
