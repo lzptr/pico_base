@@ -1,8 +1,9 @@
-FROM debian:bullseye-slim
+FROM ubuntu:20.04
 
 SHELL ["/bin/bash", "-c"]
 
 ENV SHELL=/bin/bash
+ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update && apt-get install -y \
     curl \
