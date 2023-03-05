@@ -43,7 +43,7 @@ RUN apt-get update && apt-get install -y \
     expat
 
 
-RUN useradd -ms /bin/bash vscode
+RUN useradd -ms /bin/bash --user-group --groups dialout vscode
 
 # Switch user back to root
 USER root
@@ -53,4 +53,4 @@ ARG TOOLCHAIN_DIR="/opt/toolchain"
 COPY ./libs/platforms/scripts/bootstrap.sh /
 
 # Run bootstrap script
-RUN bash -c "/bootstrap.sh --gcc --openocd --pico_sdk"
+RUN bash -c "/bootstrap.sh --gcc --openocd --jlink --pico_sdk"

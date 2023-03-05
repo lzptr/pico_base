@@ -10,7 +10,8 @@
 	],
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
-		"type=bind,source=/dev/bus/usb,target=/dev/bus/usb"
+		"type=bind,source=/dev/bus/usb,target=/dev/bus/usb",
+		"type=bind,source=/dev/tty,target=/dev/tty"
 	],
 	"containerEnv": {
 		"DISPLAY": ":0", // Add x11 forwarding to host
