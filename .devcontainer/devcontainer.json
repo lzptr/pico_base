@@ -28,7 +28,7 @@
 	},
 	"extensions": [
 		"ms-vscode.cpptools",
-		"eamodio.gitlens",
+		"eamodio.gitlens", 
 		"mcu-debug.debug-tracker-vscode",
 		"marus25.cortex-debug",
 		"twxs.cmake",
@@ -36,12 +36,12 @@
 		"ms-vscode.hexeditor",
 		"llvm-vs-code-extensions.vscode-clangd",
 		"foxundermoon.shell-format",
+		"dseight.disasexpl",
 		"formulahendry.code-runner",
 		"timonwong.shellcheck",
 		"cheshirekow.cmake-format",
 		"msrvida.vscode-sanddance",
 		"tintinweb.graphviz-interactive-preview",
-		"dseight.disasexpl",
 	],
 	"forwardPorts": [
 		5000,

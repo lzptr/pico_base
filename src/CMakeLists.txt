@@ -8,7 +8,7 @@ pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -O0 -g3 --save-temps)
 target_link_libraries(
   ${CMAKE_PROJECT_NAME} PRIVATE pico_stdlib hardware_timer hardware_clocks
-                                hardware_pwm)
+                                hardware_pwm segger_rtt)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
