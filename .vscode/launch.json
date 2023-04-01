@@ -2,7 +2,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "WSL2-USB",
+            "name": "RTT_Console",
             "cwd": "${workspaceFolder}",
             "type": "cortex-debug",
             "request": "launch",
@@ -26,6 +26,52 @@
                     }
                 ]
             },
+        },
+        {
+            "name": "RTT_Graph",
+            "cwd": "${workspaceFolder}",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+            "device": "RP2040_M0_0",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
+            "interface": "swd",
+            "executable": "build/src/pico_example.elf",
+            "serverpath": "/opt/toolchain/JLink_Linux_V786a_x86_64/JLinkGDBServerCLExe",
+            "armToolchainPath": "/opt/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin",
+            "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
+            "runToEntryPoint": "main",
+            "rttConfig": {
+                "enabled": true,
+                "address": "auto",
+                "decoders": [
+                    {
+                        "label": "",
+                        "port": 1,
+                        "type": "graph",
+                        "encoding": "unsigned",
+                        "graphId": "data",
+                        "scale": 0.5
+                    }
+                ]
+            },
+            "graphConfig": [
+                {
+                    "label": "Graph 1",
+                    "timespan": 5,
+                    "type": "realtime",
+                    "annotate": false,
+                    "maximum": 255,
+                    "minimum": 0,
+                    "plots": [
+                        {
+                            "graphId": "data", 
+                            "label": "data",
+                            "color": "#53753c"
+                        },
+                    ]
+                },
+            ],
         },
     ]
 }
