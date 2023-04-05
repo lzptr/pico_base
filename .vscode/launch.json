@@ -2,6 +2,24 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug",
+            "cwd": "${workspaceFolder}",
+            "type": "cortex-debug",
+            "request": "launch",
+            "servertype": "jlink",
+            "device": "RP2040_M0_0",
+            "BMPGDBSerialPort": "/dev/ttyACM0",
+            "interface": "swd",
+            "executable": "build/out/pico_base_project.elf",
+            "serverpath": "/opt/toolchain/JLink_Linux_V786a_x86_64/JLinkGDBServerCLExe",
+            "armToolchainPath": "/opt/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin",
+            "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
+            "runToEntryPoint": "main",
+            "serverArgs": [
+                "-nogui",
+            ],
+        },
+        {
             "name": "RTT_Console",
             "cwd": "${workspaceFolder}",
             "type": "cortex-debug",
@@ -10,7 +28,7 @@
             "device": "RP2040_M0_0",
             "BMPGDBSerialPort": "/dev/ttyACM0",
             "interface": "swd",
-            "executable": "build/out/pico_example.elf",
+            "executable": "build/out/pico_rtt.elf",
             "serverpath": "/opt/toolchain/JLink_Linux_V786a_x86_64/JLinkGDBServerCLExe",
             "armToolchainPath": "/opt/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin",
             "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
@@ -31,6 +49,7 @@
             },
         },
         {
+            // Integrated graph not working correctly yet. Use segger jscope application on windows. 
             "name": "RTT_Graph",
             "cwd": "${workspaceFolder}",
             "type": "cortex-debug",
@@ -50,7 +69,7 @@
                 "decoders": [
                     {
                         "label": "",
-                        "port": 1,
+                        "port": 0,
                         "type": "graph",
                         "encoding": "float",
                         "graphId": "data",

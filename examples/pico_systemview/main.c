@@ -1,10 +1,3 @@
-/** Minimal example with segger RTT and JScope support.
- *
- * This example computes a sine wave and writes the floating point data to RTT channel 1.
- * Start the JScope appliaction after flashing the example and connect using a segger programmer.
- * It should automcaticall detect the RTT channel and the floating point varaible and plot the sine.
- */
-
 #include <math.h>
 #include "SEGGER_RTT.h"
 #include "pico/stdlib.h"

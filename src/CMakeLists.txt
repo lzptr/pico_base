@@ -7,8 +7,7 @@ pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
 # pull in common dependencies
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -O0 -g3)
 target_link_libraries(
-  ${CMAKE_PROJECT_NAME} PRIVATE pico_stdlib hardware_timer hardware_clocks
-                                hardware_pwm segger_rtt)
+  ${CMAKE_PROJECT_NAME} PRIVATE pico_stdlib)
 
 # create map/bin/hex file etc.
 pico_add_extra_outputs(${CMAKE_PROJECT_NAME})
