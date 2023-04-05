@@ -7,11 +7,13 @@
 		"--privileged",
 		"--network=host",
 		"--volume=/tmp/.X11-unix:/tmp/.X11-unix",
+		"--volume=/etc/timezone:/etc/timezone:ro",
+		"--volume=/etc/localtime:/etc/localtime:ro"
 	],
 	"mounts": [
 		"source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
 		"type=bind,source=/dev/bus/usb,target=/dev/bus/usb",
-		"type=bind,source=/dev/tty,target=/dev/tty"
+		"type=bind,source=/dev/tty,target=/dev/tty",
 	],
 	"containerEnv": {
 		"DISPLAY": ":0", // Add x11 forwarding to host
@@ -28,7 +30,7 @@
 	},
 	"extensions": [
 		"ms-vscode.cpptools",
-		"eamodio.gitlens", 
+		"eamodio.gitlens",
 		"mcu-debug.debug-tracker-vscode",
 		"marus25.cortex-debug",
 		"twxs.cmake",
@@ -42,6 +44,8 @@
 		"cheshirekow.cmake-format",
 		"msrvida.vscode-sanddance",
 		"tintinweb.graphviz-interactive-preview",
+		"jordanbent.cortex-arm-learning",
+		"rioj7.command-variable"
 	],
 	"forwardPorts": [
 		5000,

@@ -4,12 +4,13 @@
  * SPDX-License-Identifier: BSD-3-Clause
  */
 
-#include "pico/stdlib.h"
 #include "SEGGER_RTT.h"
+#include "pico/stdlib.h"
 
-int main() {
+int main()
+{
 #ifndef PICO_DEFAULT_LED_PIN
-#warning blink example requires a board with a regular LED
+#    warning blink example requires a board with a regular LED
 #else
     static char r;
     stdio_init_all();
@@ -27,12 +28,12 @@ int main() {
     SEGGER_RTT_printf(0, "printf Test: %%5.3c,      'G' : %-5c.\r\n", 'G');
     SEGGER_RTT_printf(0, "printf Test: %%.3c,       'E' : %-5c.\r\n", 'E');
     SEGGER_RTT_printf(0, "printf Test: %%c,         'R' : %c.\r\n", 'R');
-    while (true) {
+    while (true)
+    {
         gpio_put(LED_PIN, 1);
         sleep_ms(250);
         gpio_put(LED_PIN, 0);
         sleep_ms(250);
-      
     }
 #endif
 }

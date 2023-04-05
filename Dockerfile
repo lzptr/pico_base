@@ -21,8 +21,8 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     usbutils \
     gdb-multiarch \
-    automake \ 
-    autoconf \ 
+    automake \
+    autoconf \
     texinfo \
     libtool \
     libftdi-dev \
@@ -31,7 +31,7 @@ RUN apt-get update && apt-get install -y \
     cmake
 
 # GDB dependencies
-RUN apt-get update && apt-get install -y \
+RUN apt-get install -y \
     libncurses5 \
     libncurses5-dev \
     libncursesw5 \
@@ -41,7 +41,6 @@ RUN apt-get update && apt-get install -y \
     python3-venv \
     python3-pip \
     expat
-
 
 RUN useradd -ms /bin/bash --user-group --groups dialout vscode
 
