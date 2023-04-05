@@ -11,7 +11,7 @@
             "BMPGDBSerialPort": "/dev/ttyACM0",
             "interface": "swd",
             "executable": "build/out/pico_example.elf",
-            "serverpath": "/opt/toolchain/JLink_Linux_V786a_x86_64/JLinkGDBServerCLExe/",
+            "serverpath": "/opt/toolchain/JLink_Linux_V786a_x86_64/JLinkGDBServerCLExe",
             "armToolchainPath": "/opt/toolchain/arm-gnu-toolchain-12.2.rel1-x86_64-arm-none-eabi/bin",
             "svdFile": "/opt/toolchain/pico/pico-sdk/src/rp2040/hardware_regs/rp2040.svd",
             "runToEntryPoint": "main",
