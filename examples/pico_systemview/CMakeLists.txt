@@ -1,4 +1,4 @@
-add_executable(pico_systemview main.c)
+add_executable(pico_systemview main.c SEGGER_SYSVIEW_Config_NoOS_CM0.c)
 
 pico_enable_stdio_usb(pico_systemview 1)
 pico_enable_stdio_uart(pico_systemview 0)

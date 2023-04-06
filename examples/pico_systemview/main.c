@@ -1,31 +1,50 @@
-#include <math.h>
+/** Minimal example for the segger systemviewer.
+ *
+ */
+
 #include "SEGGER_RTT.h"
+#include "SEGGER_SYSVIEW.h"
 #include "pico/stdlib.h"
+#include "hardware/structs/systick.h"
 
-char RTT_UpBuffer[4096];  // J-Scope RTT Buffer
-int RTT_Channel = 1;      // J-Scope RTT Channel
-
-int main(void)
+extern void isr_systick() //Rewrite of weak systick IRQ in crt0.s file
 {
-    SEGGER_RTT_ConfigUpBuffer(RTT_Channel, "JScope_f4", &RTT_UpBuffer[0], sizeof(RTT_UpBuffer),
-                              SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL);
+    SEGGER_SYSVIEW_RecordEnterISR();
+    SEGGER_SYSVIEW_RecordExitISR();
+}
 
-    float sample_rate = 100.0f;
-    float freq = 1.0f;
-    float amp = 1.0f;
-    const uint32_t N = (uint32_t)(sample_rate / freq) - 1;
-    float sin_seq[100] = {0.0f};
+void init_systick()
+{ 
+	systick_hw->csr = 0; 	    //Disable 
+	systick_hw->rvr = 124999UL; //Standard System clock (125Mhz)/ (rvr value + 1) = 1ms 
+    systick_hw->csr = 0x7;      //Enable Systic, Enable Exceptions	
+}
 
-    for (int i = 0; i < N; i++)
+int main()
+{
+    static char r;
+    stdio_init_all();
+    init_systick();
+
+    const uint LED_PIN = PICO_DEFAULT_LED_PIN;
+    gpio_init(LED_PIN);
+    gpio_set_dir(LED_PIN, GPIO_OUT);
+   
+    SEGGER_SYSVIEW_Conf();
+
+    SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL);
+
+    SEGGER_RTT_WriteString(0, "SEGGER Real-Time-Terminal Sample\r\n\r\n");
+    SEGGER_RTT_WriteString(0, "###### Testing SEGGER_printf() ######\r\n");
+
+    int counter = 0;
+    while (true)
     {
-        sin_seq[i] = amp * sinf(2.0f * (float)M_PI * freq * (float)i / sample_rate);
-    }
-    while (1)
-    {
-        for (int i = 0; i < N; i++)
-        {
-            SEGGER_RTT_Write(RTT_Channel, &sin_seq[i], sizeof(float));
-            sleep_ms(10);
-        }
+        gpio_put(LED_PIN, 1);
+        sleep_us(250000);
+        gpio_put(LED_PIN, 0);
+        sleep_us(250000);
+
+        SEGGER_RTT_printf(0, "LED Cycle: %d\n", counter++);
     }
 }
