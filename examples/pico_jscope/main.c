@@ -15,6 +15,8 @@ int RTT_Channel = 1u;      // J-Scope RTT Channel
 
 int main(void)
 {
+    // Configure the up buffer for RTT and specify the data channel for JSscope to a 4 byte float prefixed by a
+    // 4 byte timestamp in us.
     SEGGER_RTT_ConfigUpBuffer(RTT_Channel, "JScope_t4f4", &RTT_UpBuffer[0u], sizeof(RTT_UpBuffer),
                               SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL);
 
