@@ -79,7 +79,7 @@ extern unsigned int SEGGER_SYSVIEW_TickCnt;
 #define SEGGER_SYSVIEW_CORE SEGGER_SYSVIEW_CORE_CM0
 
 // The application name to be displayed in SystemViewer
-#define SYSVIEW_APP_NAME "Demo Application"
+#define SYSVIEW_APP_NAME "Pico SystemView Demo"
 
 // The target device name
 #define SYSVIEW_DEVICE_NAME "Cortex-M0"
@@ -124,7 +124,7 @@ extern unsigned int SEGGER_SYSVIEW_TickCnt;
  */
 static void _cbSendSystemDesc(void)
 {
-    SEGGER_SYSVIEW_SendSysDesc("N=" SYSVIEW_APP_NAME ",D=" SYSVIEW_DEVICE_NAME);
+    SEGGER_SYSVIEW_SendSysDesc("N=" SYSVIEW_APP_NAME ",O=NO_OS, D=" SYSVIEW_DEVICE_NAME);
     SEGGER_SYSVIEW_SendSysDesc("I#15=SysTick");
 }
 
@@ -161,53 +161,6 @@ void SEGGER_SYSVIEW_Conf(void)
     SEGGER_SYSVIEW_Init(SYSVIEW_TIMESTAMP_FREQ, SYSVIEW_CPU_FREQ, 0, _cbSendSystemDesc);
     SEGGER_SYSVIEW_SetRAMBase(SYSVIEW_RAM_BASE);
 }
-
-/*********************************************************************
- *
- *       SEGGER_SYSVIEW_X_GetTimestamp()
- *
- * Function description
- *   Returns the current timestamp in ticks using the system tick
- *   count and the SysTick counter.
- *   All parameters of the SysTick have to be known and are set via
- *   configuration defines on top of the file.
- *
- * Return value
- *   The current timestamp.
- *
- * Additional information
- *   SEGGER_SYSVIEW_X_GetTimestamp is always called when interrupts are
- *   disabled. Therefore locking here is not required.
- */
-// U32 SEGGER_SYSVIEW_X_GetTimestamp(void)
-// {
-// #if USE_CYCCNT_TIMESTAMP
-//     U32 TickCount;
-//     U32 Cycles;
-//     U32 CyclesPerTick;
-//     //
-//     // Get the cycles of the current system tick.
-//     // SysTick is down-counting, subtract the current value from the number of cycles per tick.
-//     //
-//     CyclesPerTick = SYST_RVR + 1;
-//     Cycles = (CyclesPerTick - SYST_CVR);
-//     //
-//     // Get the system tick count.
-//     //
-//     TickCount = SEGGER_SYSVIEW_TickCnt;
-//     //
-//     // If a SysTick interrupt is pending, re-read timer and adjust result
-//     //
-//     if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0)
-//     {
-//         Cycles = (CyclesPerTick - SYST_CVR);
-//         TickCount++;
-//     }
-//     Cycles += TickCount * CyclesPerTick;
-
-//     return Cycles;
-// #endif
-// }
 
 /*********************************************************************
  *

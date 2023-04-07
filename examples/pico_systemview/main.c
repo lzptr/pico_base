@@ -36,7 +36,7 @@ extern void isr_systick()  // Rewrite of weak systick IRQ in crt0.s file
 void init_systick()
 {
     systick_hw->csr = 0;         // Disable
-    systick_hw->rvr = 124999UL;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1us
+    systick_hw->rvr = 124999UL;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1ms
     systick_hw->cvr = 0;         // clear the count to force initial reload
     systick_hw->csr = 0x7;       // Enable Systic, Enable Exceptions
 }
@@ -79,8 +79,7 @@ uint32_t SEGGER_SYSVIEW_X_GetTimestamp(void)
         SEGGER_SYSVIEW_TickCnt++;
     }
 
-    // Create combined 32-bit timestamp
-    timeStamp = (tickCount << 16) | systick_counter;
+    timeStamp = tickCount * systick_counter_max + systick_counter;
 
     return timeStamp;
 }
@@ -102,6 +101,7 @@ int main()
     irq_set_enabled(IO_IRQ_BANK0, true);
 
     SEGGER_SYSVIEW_Conf();
+    SEGGER_SYSVIEW_OnIdle();
 
     SEGGER_RTT_ConfigUpBuffer(0, NULL, NULL, 0, SEGGER_RTT_MODE_BLOCK_IF_FIFO_FULL);
 
