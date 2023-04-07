@@ -11,19 +11,9 @@
 #define LED_PIN PICO_DEFAULT_LED_PIN
 #define BUTTON_PIN 22
 
-extern void isr_systick()  // Rewrite of weak systick IRQ in crt0.s file
-{
-    SEGGER_SYSVIEW_RecordEnterISR();
-    busy_wait_us(500);
-    SEGGER_SYSVIEW_RecordExitISR();
-}
-
-void init_systick()
-{
-    systick_hw->csr = 0;            // Disable
-    systick_hw->rvr = 124999999UL;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1s
-    systick_hw->csr = 0x7;          // Enable Systic, Enable Exceptions
-}
+#define SCB_ICSR (*(volatile U32*)(0xE000ED04uL))  // Interrupt Control State Register
+#define SCB_ICSR_PENDSTSET_MASK (1UL << 26)        // SysTick pending bit
+extern unsigned int SEGGER_SYSVIEW_TickCnt;
 
 void button_gpio_irq()
 {
@@ -34,6 +24,65 @@ void button_gpio_irq()
     busy_wait_us(250);
     gpio_set_irq_enabled(BUTTON_PIN, GPIO_IRQ_EDGE_RISE, true);
     SEGGER_SYSVIEW_RecordExitISR();
+}
+
+extern void isr_systick()  // Rewrite of weak systick IRQ in crt0.s file
+{
+    SEGGER_SYSVIEW_RecordEnterISR();
+    SEGGER_SYSVIEW_TickCnt++;
+    SEGGER_SYSVIEW_RecordExitISR();
+}
+
+void init_systick()
+{
+    systick_hw->csr = 0;         // Disable
+    systick_hw->rvr = 124999UL;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1us
+    systick_hw->cvr = 0;         // clear the count to force initial reload
+    systick_hw->csr = 0x7;       // Enable Systic, Enable Exceptions
+}
+
+/*********************************************************************
+ *
+ *       SEGGER_SYSVIEW_X_GetTimestamp()
+ *
+ * Function description
+ *   Returns the current timestamp in ticks using the system tick
+ *   count and the SysTick counter.
+ *   All parameters of the SysTick have to be known and are set via
+ *   configuration defines on top of the file.
+ *
+ * Return value
+ *   The current timestamp.
+ *
+ * Additional information
+ *   SEGGER_SYSVIEW_X_GetTimestamp is always called when interrupts are
+ *   disabled. Therefore locking here is not required.
+ */
+uint32_t SEGGER_SYSVIEW_X_GetTimestamp(void)
+{
+    uint32_t tickCount;
+    uint32_t timeStamp;
+    uint32_t systick_counter_max;
+    uint32_t systick_counter;
+
+    // Read overflow counter
+    tickCount = SEGGER_SYSVIEW_TickCnt;
+
+    // SysTick is down-counting, subtract the current value from the number of cycles per tick.
+    systick_counter_max = systick_hw->rvr + 1;
+    systick_counter = (systick_counter_max - systick_hw->cvr);
+
+    // If a timer interrupt is pending, adjust overflow counter
+    if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0)
+    {
+        systick_counter = (systick_counter_max - systick_hw->cvr);
+        SEGGER_SYSVIEW_TickCnt++;
+    }
+
+    // Create combined 32-bit timestamp
+    timeStamp = (tickCount << 16) | systick_counter;
+
+    return timeStamp;
 }
 
 int main()

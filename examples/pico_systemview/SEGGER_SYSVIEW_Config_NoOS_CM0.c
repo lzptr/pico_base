@@ -85,7 +85,7 @@ extern unsigned int SEGGER_SYSVIEW_TickCnt;
 #define SYSVIEW_DEVICE_NAME "Cortex-M0"
 
 // Frequency of the timestamp. Must match SEGGER_SYSVIEW_Conf.h
-#define SYSVIEW_TIMESTAMP_FREQ (125000000)
+#define SYSVIEW_TIMESTAMP_FREQ (1000)
 
 // System Frequency. SystemcoreClock is used in most CMSIS compatible projects.
 #define SYSVIEW_CPU_FREQ (125000000)
@@ -95,7 +95,7 @@ extern unsigned int SEGGER_SYSVIEW_TickCnt;
 
 // Define as 1 if the Cortex-M cycle counter is used as SystemView timestamp. Must match SEGGER_SYSVIEW_Conf.h
 #ifndef USE_CYCCNT_TIMESTAMP
-#    define USE_CYCCNT_TIMESTAMP 1
+#    define USE_CYCCNT_TIMESTAMP 0
 #endif
 
 // Define as 1 if the Cortex-M cycle counter is used and there might be no debugger attached while recording.
@@ -179,35 +179,35 @@ void SEGGER_SYSVIEW_Conf(void)
  *   SEGGER_SYSVIEW_X_GetTimestamp is always called when interrupts are
  *   disabled. Therefore locking here is not required.
  */
-U32 SEGGER_SYSVIEW_X_GetTimestamp(void)
-{
-#if USE_CYCCNT_TIMESTAMP
-    U32 TickCount;
-    U32 Cycles;
-    U32 CyclesPerTick;
-    //
-    // Get the cycles of the current system tick.
-    // SysTick is down-counting, subtract the current value from the number of cycles per tick.
-    //
-    CyclesPerTick = SYST_RVR + 1;
-    Cycles = (CyclesPerTick - SYST_CVR);
-    //
-    // Get the system tick count.
-    //
-    TickCount = SEGGER_SYSVIEW_TickCnt;
-    //
-    // If a SysTick interrupt is pending, re-read timer and adjust result
-    //
-    if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0)
-    {
-        Cycles = (CyclesPerTick - SYST_CVR);
-        TickCount++;
-    }
-    Cycles += TickCount * CyclesPerTick;
+// U32 SEGGER_SYSVIEW_X_GetTimestamp(void)
+// {
+// #if USE_CYCCNT_TIMESTAMP
+//     U32 TickCount;
+//     U32 Cycles;
+//     U32 CyclesPerTick;
+//     //
+//     // Get the cycles of the current system tick.
+//     // SysTick is down-counting, subtract the current value from the number of cycles per tick.
+//     //
+//     CyclesPerTick = SYST_RVR + 1;
+//     Cycles = (CyclesPerTick - SYST_CVR);
+//     //
+//     // Get the system tick count.
+//     //
+//     TickCount = SEGGER_SYSVIEW_TickCnt;
+//     //
+//     // If a SysTick interrupt is pending, re-read timer and adjust result
+//     //
+//     if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0)
+//     {
+//         Cycles = (CyclesPerTick - SYST_CVR);
+//         TickCount++;
+//     }
+//     Cycles += TickCount * CyclesPerTick;
 
-    return Cycles;
-#endif
-}
+//     return Cycles;
+// #endif
+// }
 
 /*********************************************************************
  *

@@ -19,7 +19,10 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 pico_sdk_init()
 
 add_subdirectory(src)
+
+#set(SEGGER_SYSVIEW_TIMESTAMP_BITS 24)
 add_subdirectory(libs/segger)
+
 add_subdirectory(examples/pico_rtt)
 add_subdirectory(examples/pico_jscope)
 add_subdirectory(examples/pico_systemview)

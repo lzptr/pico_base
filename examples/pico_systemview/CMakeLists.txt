@@ -4,6 +4,7 @@ pico_enable_stdio_usb(pico_systemview 1)
 pico_enable_stdio_uart(pico_systemview 0)
 pico_add_extra_outputs(pico_systemview)
 
+
 # pull in common dependencies
 target_compile_options(pico_systemview PRIVATE -O0 -g3)
 target_link_libraries(
