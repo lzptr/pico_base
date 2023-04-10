@@ -9,11 +9,8 @@
 #include "pico/stdlib.h"
 
 #define LED_PIN PICO_DEFAULT_LED_PIN
-#define BUTTON_PIN 22
-
-#define SCB_ICSR (*(volatile U32*)(0xE000ED04uL))  // Interrupt Control State Register
-#define SCB_ICSR_PENDSTSET_MASK (1UL << 26)        // SysTick pending bit
-extern unsigned int SEGGER_SYSVIEW_TickCnt;
+#define TEST_PIN 22 // Test pin for checking timing with oscilloscope
+#define BUTTON_PIN 2 // Button irq to see some asynchronous events in systemview. Connect a button and trigger the irq while recording with systemview
 
 void button_gpio_irq()
 {
@@ -26,17 +23,18 @@ void button_gpio_irq()
     SEGGER_SYSVIEW_RecordExitISR();
 }
 
-extern void isr_systick()  // Rewrite of weak systick IRQ in crt0.s file
+// Rewrite of weak systick IRQ in crt0.s file
+extern void isr_systick()  
 {
     SEGGER_SYSVIEW_RecordEnterISR();
-    SEGGER_SYSVIEW_TickCnt++;
+    gpio_xor_mask(0x400000);
     SEGGER_SYSVIEW_RecordExitISR();
 }
 
 void init_systick()
 {
     systick_hw->csr = 0;         // Disable
-    systick_hw->rvr = 124999UL;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1ms
+    systick_hw->rvr = 124999U;  // Standard System clock (125Mhz)/ (rvr value + 1) = 1ms
     systick_hw->cvr = 0;         // clear the count to force initial reload
     systick_hw->csr = 0x7;       // Enable Systic, Enable Exceptions
 }
@@ -60,27 +58,7 @@ void init_systick()
  */
 uint32_t SEGGER_SYSVIEW_X_GetTimestamp(void)
 {
-    uint32_t tickCount;
-    uint32_t timeStamp;
-    uint32_t systick_counter_max;
-    uint32_t systick_counter;
-
-    // Read overflow counter
-    tickCount = SEGGER_SYSVIEW_TickCnt;
-
-    // SysTick is down-counting, subtract the current value from the number of cycles per tick.
-    systick_counter_max = systick_hw->rvr + 1;
-    systick_counter = (systick_counter_max - systick_hw->cvr);
-
-    // If a timer interrupt is pending, adjust overflow counter
-    if ((SCB_ICSR & SCB_ICSR_PENDSTSET_MASK) != 0)
-    {
-        systick_counter = (systick_counter_max - systick_hw->cvr);
-        SEGGER_SYSVIEW_TickCnt++;
-    }
-
-    timeStamp = tickCount * systick_counter_max + systick_counter;
-
+    uint32_t timeStamp = timer_hw->timerawl;
     return timeStamp;
 }
 
@@ -92,6 +70,8 @@ int main()
 
     gpio_init(LED_PIN);
     gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_init(TEST_PIN);
+    gpio_set_dir(TEST_PIN, GPIO_OUT);
 
     gpio_init(BUTTON_PIN);
     gpio_set_dir(BUTTON_PIN, GPIO_IN);

@@ -20,7 +20,6 @@ pico_sdk_init()
 
 add_subdirectory(src)
 
-set(SEGGER_SYSVIEW_TIMESTAMP_BITS 24)
 add_subdirectory(libs/segger)
 
 add_subdirectory(examples/pico_rtt)
